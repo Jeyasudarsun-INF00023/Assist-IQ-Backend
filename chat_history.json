@@ -1,0 +1,46 @@
+{
+    "managerinfinitechx@gmail.com": [
+        {
+            "id": "1769748419191",
+            "title": "hai",
+            "messages": [
+                {
+                    "from": "bot",
+                    "text": "Welcome"
+                },
+                {
+                    "from": "bot",
+                    "text": "Successfully connected to **bharath**!",
+                    "status": {
+                        "success": true
+                    },
+                    "automation": false
+                },
+                {
+                    "from": "user",
+                    "text": "hai"
+                },
+                {
+                    "from": "bot",
+                    "text": "Hey! Need some help with software or system checks?",
+                    "automation": false,
+                    "status": null,
+                    "log": null
+                },
+                {
+                    "from": "user",
+                    "text": "how r u"
+                },
+                {
+                    "from": "bot",
+                    "text": "I'm not quite sure about that. I can help with software,system health (RAM/CPU), or FAQs.",
+                    "automation": false,
+                    "status": null,
+                    "log": null
+                }
+            ],
+            "timestamp": "2026-01-30T04:47:08.107Z",
+            "pinned": false
+        }
+    ]
+}
