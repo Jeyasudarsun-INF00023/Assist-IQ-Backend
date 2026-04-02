@@ -8,3 +8,4 @@ python-dotenv
 requests
 msal
 python-multipart
+psycopg2-binary
