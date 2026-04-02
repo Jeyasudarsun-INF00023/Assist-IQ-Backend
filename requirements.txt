@@ -1,4 +1,10 @@
 fastapi
-uvicorn
+uvicorn[standard]
 psutil
 cryptography
+sqlalchemy
+pydantic
+python-dotenv
+requests
+msal
+python-multipart
