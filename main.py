@@ -33,10 +33,13 @@ from services.auth import get_access_token
 # LICENSE_SKU_ID is still needed here for assigning licenses
 LICENSE_SKU_ID = os.getenv("LICENSE_SKU_ID", "3b555118-da6a-4418-894f-7df1e2096870")
 EMAIL_DOMAIN = os.getenv("EMAIL_DOMAIN", "theinfinitechx.com")
-APP_DOMAIN = os.getenv("APP_DOMAIN", "192.168.1.14:8000")
+APP_DOMAIN = os.getenv("APP_DOMAIN") # Render will set this dynamically
 
 def get_current_ssid():
     """Returns the current SSID the server is connected to."""
+    if platform.system() != "Windows":
+        return None # Not relevant or not supported on non-Windows systems
+    
     import subprocess
     try:
         raw_out = subprocess.check_output('netsh wlan show interfaces', shell=True).decode('ascii', errors='ignore')
