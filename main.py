@@ -33,7 +33,7 @@ from services.auth import get_access_token
 # LICENSE_SKU_ID is still needed here for assigning licenses
 LICENSE_SKU_ID = os.getenv("LICENSE_SKU_ID", "3b555118-da6a-4418-894f-7df1e2096870")
 EMAIL_DOMAIN = os.getenv("EMAIL_DOMAIN", "theinfinitechx.com")
-APP_DOMAIN = os.getenv("APP_DOMAIN") # Render will set this dynamically
+APP_DOMAIN = os.getenv("APP_DOMAIN", os.getenv("RENDER_EXTERNAL_HOSTNAME", "localhost:8000"))
 
 def get_current_ssid():
     """Returns the current SSID the server is connected to."""
@@ -113,6 +113,10 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
+@app.get("/")
+def read_root():
+    return {"status": "Backend is running!", "app_domain": APP_DOMAIN}
+
 
 class AppIconUpload(BaseModel):
     employee_id: str
@@ -160,6 +164,7 @@ async def startup_event():
     print("\n" + "="*30)
     print("BACKEND IS AWAKE")
     print("Running on Windows: " + str(platform.system() == "Windows"))
+    print(f"App Domain: {APP_DOMAIN}")
     print("="*30 + "\n")
 
      #Create tables automatically
@@ -1662,6 +1667,10 @@ def connect_remote(target: RemoteTarget):
         "details": f"Port is open but WinRM service did not respond. \n\n" \
                   f"**Fix:** Run `winrm quickconfig` on {target.hostname}."
     }
+
+@app.get("/auth/login")
+def login_get():
+    return {"message": "Please use a POST request to login with 'name', 'email', and 'picture'."}
 
 @app.post("/auth/login")
 def login(req: LoginRequest):
