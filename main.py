@@ -575,11 +575,14 @@ def download_agent_package(employee_id: str, db: Session = Depends(get_db)):
     if not employee:
         raise HTTPException(status_code=404, detail="Employee not found")
     
+    # Determine protocol (use https for Render)
+    protocol = "https" if "onrender.com" in APP_DOMAIN else "http"
+    
     # Configuration to inject
     config = {
         "employee_id": employee.employee_id,
         "api_token": employee.api_token,
-        "backend_url": f"http://{APP_DOMAIN}/activity",
+        "backend_url": f"{protocol}://{APP_DOMAIN}/activity",
         "idle_threshold_seconds": 120
     }
     
@@ -587,14 +590,16 @@ def download_agent_package(employee_id: str, db: Session = Depends(get_db)):
     zip_buffer = io.BytesIO()
     with zipfile.ZipFile(zip_buffer, "a", zipfile.ZIP_DEFLATED, False) as zip_file:
         # 1. Add Compiled EXE (best for production)
-        # BASE_DIR is backend/, so go up once to project root, then to dist/
-        exe_path = os.path.join(BASE_DIR, "..", "dist", "agent_activity.exe")
+        # Search in backend/dist/ or backend/ directly
+        exe_path = os.path.join(BASE_DIR, "dist", "agent_activity.exe")
+        if not os.path.exists(exe_path):
+            exe_path = os.path.join(BASE_DIR, "agent_activity.exe")
         
         if os.path.exists(exe_path):
             zip_file.write(exe_path, "agent_activity.exe")
         else:
             # Fallback to source script if EXE is not built
-            agent_path = os.path.join(BASE_DIR, "..", "agent_activity.py")
+            agent_path = os.path.join(BASE_DIR, "agent_activity.py")
             if os.path.exists(agent_path):
                  zip_file.write(agent_path, "agent_activity.py")
 
